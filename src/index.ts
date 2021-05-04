@@ -20,20 +20,10 @@ function component() {
   document.body.appendChild(app.view);
 
 
-  let rect: Sprite;
+  let sprite = PIXI.Sprite.from('./images/square.png');
 
-  var graphics = new PIXI.Graphics();
-
-  graphics.beginFill(0xFF0000);
-
-  // set the line style to have a width of 5 and set the color to red
-  graphics.lineStyle(5, 0xFF0000);
-
-  // draw a rectangle
-  graphics.drawRect(0, 0, 100, 100);
-
-  app.stage.addChild(graphics);
   return element;
+
 
 
 }
