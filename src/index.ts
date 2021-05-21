@@ -3,6 +3,7 @@ import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite }
 import * as PIXI from "pixi.js";
 
 let keys:any = {};
+let player: Sprite;
 
 import './style.css';
 
@@ -21,7 +22,7 @@ function component() {
 
   //Introduces simple cube sprite from file. 
 
-  let player: Sprite = PIXI.Sprite.from("./images/square.png")
+  player = PIXI.Sprite.from("./images/square.png")
   player.anchor.set(0.5);
   player.x = app.view.width /2;
   player.y = app.view.height /2;
@@ -47,7 +48,14 @@ function keysUp(e:any){
 }
 
 function gameloop(){
-  
+//Left arrow
+if (keys["38"]) {
+    player.y -= 5;
+}
+//Right arrow
+if (keys["40"]) {
+    player.y += 5;
+}
 }
 
 
