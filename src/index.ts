@@ -18,7 +18,7 @@ function component() {
   const element = document.createElement('div');
 
   //Creating the application/stage in PIXI
-  let app = new Application({ width: 512, height: 512 });
+  let app = new Application({ width: 512, height: 512 }); 
 
   app.renderer.view.style.position = 'absolute';
   app.renderer.view.style.display = "block";
@@ -36,32 +36,8 @@ function component() {
 
   window.addEventListener("keydown", keysDown)
   window.addEventListener("keyup", keysUp)
-
-  app.loader
-    .add("bgback", "./assets/background-shite/bg.png")
-    .add("bgBuildingsFar", "./assets/background-shite/far-buldings.png")
-    .add("bgBuildings", "./assets/background-shite/buildings.png")
-    .add("bgForeground", "./assets/background-shite/skill-foreground.png")
-  app.loader.onComplete(initLevel)
-  app.loader.load()
-
-  function initLevel() {
-    bgBack = createBg(app.loader.resources["bgback"].texture)
-    bgBuildingsFar = createBg(app.loader.resources["bgBuildingsFar"].texture)
-    bgBuildings = createBg(app.loader.resources["bgBuildings"].texture)
-    bgForeground = createBg(app.loader.resources["bgForeground"].texture)
-    
-    //adds key handling function to game.
-    app.ticker.add(gameloop);
-  }
-
-  function createBg(texture: any) {
-    let tiling = new PIXI.TilingSprite(texture, 800, 600)
-    tiling.position.set(0,0);
-    app.stage.addChild(tiling)
-
-    return tiling;
-  }
+  
+  return element
 }
 
 //Key handlers
