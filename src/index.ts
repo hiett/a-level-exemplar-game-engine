@@ -1,83 +1,70 @@
-import {
-  Application,
-  Loader,
-  LoaderResource,
-  PlaneGeometry,
-  Rectangle,
-  Sprite,
-} from "pixi.js";
-import * as PIXI from "pixi.js";
-
-let keys: any = {};
-let player: Sprite;
-
-import "./style.css";
-const element = document.createElement("div");
-
-function component() {
-  let app = new PIXI.Application({
-    width: 800,
-    height: 600,
-    backgroundColor: 0x808080,
-  });
-  document.body.appendChild(app.view);
-
-  //creating an avatar for the player
-  player = PIXI.Sprite.from("./assets/sqaure.png");
-  player.anchor.set(0.5);
-  player.x = 0;
-  player.y = 0;
-
-  app.stage.addChild(player);
-
-  //keyboard event handlers
-  window.addEventListener("keydown", keysDown);
-  window.addEventListener("keyup", keysUp);
-
-  //game updates every tick
-  app.ticker.add(gameLoop);
-  //detects when key is pressed
-  function keysDown(e: any) {
-    keys[e.keyCode] = true;
-  }
-
-  function keysUp(e: any) {
-    keys[e.keyCode] = false;
-  }
-
-  let gravity = 0.9;
-  let isJumping = false; //prevents double jump
-  function jump() {
-    if (isJumping) return;
-    let timerUpID = setInterval(function () {
-      //the setInterval method allows me to create a function that runs every certain interval of time
-      if (player.y < 450) {
-        clearInterval(timerUpID); // stops permanent jumping
-        let timerDownID = setInterval(function () {
-          if (player.y > 570) {
-            clearInterval(timerDownID); //stops permanent fall
-            isJumping = false;
-          }
-          player.y += 4;
-        }, 20);
+import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite } from 'pixi.js';
+  import * as PIXI from "pixi.js";
+  
+  let keys: any = {};
+  let player: Sprite;
+  let bgBack: any
+  let bgBuildingsFar:any
+  let bgBuildings: any
+  let bgForeground: any
+  let bgX = 0;
+  let bgSpeed= 1;
+  
+  import './style.css';
+  import { update } from 'lodash';
+  
+  
+  function component() {
+    const element = document.createElement('div');
+  
+    //Creating the application/stage in PIXI
+    let app = new Application({ width: 800, height: 600}); 
+  
+    app.renderer.view.style.position = 'absolute';
+    app.renderer.view.style.display = "block";
+  
+    document.body.appendChild(app.view);
+  
+    //Introduces simple cube sprite from file. 
+  
+    player = PIXI.Sprite.from("./assets/square.png")
+    player.anchor.set(0.5);
+    player.x = app.view.width / 2;
+    player.y = app.view.height / 2;
+  
+    app.stage.addChild(player); //adds sprite to the application
+  
+    window.addEventListener("keydown", keysDown)
+    window.addEventListener("keyup", keysUp)
+  
+    function keysDown(e: any) {
+      console.log(e.keyCode)
+      keys[e.keyCode] = true;
+    }
+    
+    function keysUp(e: any) {
+      console.log(e.keyCode)
+      keys[e.keyCode] = false;
+    }
+    
+    function gameloop() {
+      //Left arrow
+      if (keys["38"]) {
+        player.y -= 5;
       }
-      isJumping = true;
-      player.y -= 5;
-      player.y = player.y * gravity;
-    }, 20);
-  }
+      //Right arrow
+      if (keys["40"]) {
+        player.y += 5;
+      }
+    
 
-  function gameLoop() {
-    //Left arrow
-    if (keys["37"]) {
-      player.x -= 5;
     }
-    //Right arrow
-    if (keys["39"]) {
-      player.x += 5;
-    }
+    
+    app.ticker.add(gameloop)
+    return element
   }
-
-  return element;
-}
-document.body.appendChild(component());
+  
+  //Key handlers
+  
+  
+  document.body.appendChild(component());
