@@ -1,17 +1,15 @@
 import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite } from 'pixi.js';
   import * as PIXI from "pixi.js";
-  
-  let keys: any = {};
-  let player: Sprite;
-  let bgBack: any
-  let bgBuildingsFar:any
-  let bgBuildings: any
-  let bgForeground: any
-  let bgX = 0;
-  let bgSpeed= 1;
-  
+  import * as Matter from "matter-js"; 
   import './style.css';
   import { update } from 'lodash';
+import { GameObject } from './gameObject';
+
+  let keys: any = {};
+  let player: Sprite;
+  let engine = Matter.Engine;
+  let body = Matter.Body;
+  
   
   
   function component() {
@@ -26,12 +24,8 @@ import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite }
     document.body.appendChild(app.view);
   
     //Introduces simple cube sprite from file. 
-  
-    player = PIXI.Sprite.from("./assets/square.png")
-    player.anchor.set(0.5);
-    player.x = app.view.width / 2;
-    player.y = app.view.height / 2;
-  
+
+    let player = new GameObject(PIXI.Sprite.from("assets/square.png"),  Matter.Bodies.rectangle(0,0,128, 128))  
     app.stage.addChild(player); //adds sprite to the application
   
     window.addEventListener("keydown", keysDown)
@@ -54,13 +48,12 @@ import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite }
       }
       //Right arrow
       if (keys["40"]) {
-        player.y += 5;
+        Matter.Body.setVelocity(player, {x: 0, y: 10})
       }
-    
-
-    }
+      
     
     app.ticker.add(gameloop)
+
     return element
   }
   
