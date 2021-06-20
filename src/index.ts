@@ -1,4 +1,4 @@
-import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite } from 'pixi.js';
+import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite, Texture } from 'pixi.js';
   import * as PIXI from "pixi.js";
   import * as Matter from "matter-js"; 
   import './style.css';
@@ -6,9 +6,14 @@ import { Application, Loader, LoaderResource, PlaneGeometry, Rectangle, Sprite }
 import { GameObject } from './gameObject';
 
   let keys: any = {};
-  let player: Sprite;
-  let engine = Matter.Engine;
-  let body = Matter.Body;
+  var Engine = Matter.Engine,
+    Render = Matter.Render,
+    World = Matter.World,
+    Bodies = Matter.Bodies,
+    Body= Matter.Body;
+  let engine = Engine.create()
+ 
+  const loader = PIXI.Loader
   
   
   
@@ -25,8 +30,11 @@ import { GameObject } from './gameObject';
   
     //Introduces simple cube sprite from file. 
 
-    let player = new GameObject(PIXI.Sprite.from("assets/square.png"),  Matter.Bodies.rectangle(0,0,128, 128))  
-    app.stage.addChild(player); //adds sprite to the application
+    let texture = new loader.resources[]
+
+
+    
+    //adds sprite to the application
   
     window.addEventListener("keydown", keysDown)
     window.addEventListener("keyup", keysUp)
@@ -42,13 +50,8 @@ import { GameObject } from './gameObject';
     }
     
     function gameloop() {
-      //Left arrow
-      if (keys["38"]) {
-        player.y -= 5;
-      }
       //Right arrow
       if (keys["40"]) {
-        Matter.Body.setVelocity(player, {x: 0, y: 10})
       }
       
     
