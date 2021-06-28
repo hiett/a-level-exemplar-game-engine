@@ -1,5 +1,5 @@
 import { GameObject } from "../gameObject";
-import { GameAssetIdentifier, getTexture } from "../loader/gameAsset";
+import { GameAssetIdentifier, getTexture } from "../../loader/gameAsset";
 import { Sprite } from "pixi.js";
 
 export class TestGameObject extends GameObject {

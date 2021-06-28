@@ -1,7 +1,7 @@
 import { Sprite } from "pixi.js";
 import * as Matter from "matter-js";
 import * as uuid from "uuid";
-import { PixiAppInstance } from "./index";
+import { GameManagerInstance } from "../index";
 
 export abstract class GameObject {
   pixiData: Sprite;
@@ -17,7 +17,7 @@ export abstract class GameObject {
   }
 
   public addToGameLibraries() {
-    PixiAppInstance.stage.addChild(this.pixiData);
+    GameManagerInstance.pixiInstance.stage.addChild(this.pixiData);
   }
 
   abstract spawn(): void;

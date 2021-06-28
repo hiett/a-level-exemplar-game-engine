@@ -1,8 +1,12 @@
-import { PixiAppInstance } from "../index";
-import { Texture } from "pixi.js";
+import { Texture, Loader } from "pixi.js";
+import { GameManagerInstance } from "../index";
 
 let gameAssetStorage: GameAsset[] = [];
 
+/**
+ * This is where we centrally register all of our game assets. They will be loaded in before
+ * the GameManager#startGame is called.
+ */
 export enum GameAssetIdentifier {
   BACKGROUND_1 = "assets/background-shite/bg.png",
   BUILDINGS_1 = "assets/background-shite/buildings.png",
@@ -21,9 +25,10 @@ export class GameAsset {
     this.loaded = false;
     this.path = (GameAssetIdentifier as any)[assetIdentifier as any];
 
-    PixiAppInstance.loader
+    GameManagerInstance.pixiInstance.loader
       .add(assetIdentifier, this.path)
-      .load((loader, resources) => {
+      .load((loader: Loader, resources: any) => {
+        // TODO: Find resources type
         this.texture = resources[assetIdentifier].texture;
 
         this.loadingCallbacks.forEach((callback) => callback());
@@ -40,6 +45,7 @@ export class GameAsset {
   }
 }
 
+// TODO: Refactor to be a class based loader
 export async function loadGameAssets() {
   const assetList: GameAsset[] = [];
 
