@@ -1,11 +1,11 @@
 import { Sprite } from "pixi.js";
-import * as Matter from "matter-js";
+import { Body, Composite } from "matter-js";
 import * as uuid from "uuid";
 import { GameManagerInstance } from "../index";
 
 export abstract class GameObject {
   pixiData: Sprite;
-  matterData: any;
+  matterData: Body;
 
   uuid: string; // To differenciate every single GameObject instance
 
@@ -17,7 +17,12 @@ export abstract class GameObject {
   }
 
   public addToGameLibraries() {
-    GameManagerInstance.pixiInstance.stage.addChild(this.pixiData);
+    if (this.pixiData) {
+      GameManagerInstance.pixiInstance.stage.addChild(this.pixiData);
+    }
+    if (this.matterData) {
+      Composite.add(GameManagerInstance.matterEngine.world, this.matterData);
+    }
   }
 
   abstract spawn(): void;
@@ -34,7 +39,8 @@ export abstract class GameObject {
       return; // We don't want to update either if they're missing. This would error out anyway.
     }
 
-    this.pixiData.position = this.matterData.position;
-    this.pixiData.rotation = this.matterData.rotation;
+    this.pixiData.position.x = this.matterData.position.x;
+    this.pixiData.position.y = this.matterData.position.y;
+    this.pixiData.rotation = this.matterData.angle;
   }
 }
