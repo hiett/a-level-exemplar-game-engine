@@ -27,6 +27,8 @@ export abstract class GameObject {
 
   abstract spawn(): void;
 
+  abstract gameLoop(delta: number): void;
+
   /**
    * Update the PixiJS render position from the Matter physics position.
    * In our game, Matter is representing the position and physics. However, this is not automatically

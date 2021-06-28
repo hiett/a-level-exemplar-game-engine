@@ -16,4 +16,6 @@ export class TestGameObject extends GameObject {
       Body.setVelocity(this.matterData, { x: 0, y: -2 });
     }, 1000);
   }
+
+  gameLoop() {}
 }

@@ -1,9 +1,12 @@
 import { Application } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { loadGameAssets } from "./loader/gameAsset";
 import { GameObjectManager } from "./gameObjects/gameObjectManager";
-import { TestGameObject } from "./gameObjects/implementations/testGameObject";
 import { Engine } from "matter-js";
-import { PlatformGameObject } from "./gameObjects/implementations/platformGameObject";
+import { BackgroundGameObject } from "./gameObjects/implementations/backgroundGameObject";
+
+// For pixel games, Nearest neighbour preserves pixellated edges really well :)
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 export class GameManager {
   // Pixi
@@ -20,8 +23,7 @@ export class GameManager {
 
   constructor() {
     this.pixiInstance = new Application({
-      width: window.innerWidth,
-      height: window.innerHeight,
+      resizeTo: window,
     });
     this.matterEngine = Engine.create();
     this.gameObjectManager = new GameObjectManager();
@@ -47,11 +49,8 @@ export class GameManager {
     this.pixiInstance.ticker.add(this.gameLoop);
 
     // Some tests:
-    const testObject = new TestGameObject();
+    const testObject = new BackgroundGameObject(0);
     this.gameObjectManager.addGameObject(testObject);
-
-    const testPlatform = new PlatformGameObject(25, 600);
-    this.gameObjectManager.addGameObject(testPlatform);
   }
 
   gameLoop() {
@@ -63,6 +62,7 @@ export class GameManager {
     // Note: Performance.now is better at providing time faster than Date.now
     const time = performance.now();
     const frameDeltaMs = time - this.lastFrameTimeMs;
+    const frameTargetDelta = frameDeltaMs / (1000 / 60); // This is or target constant
     this.lastFrameTimeMs = time;
 
     // Update Matter. In Matter, we can either use a runner, or call Engine#update. Since we already have a
@@ -71,6 +71,7 @@ export class GameManager {
     Engine.update(this.matterEngine, frameDeltaMs);
 
     // Copy the Matter data to Pixi for all game objects registered.
+    this.gameObjectManager.alertGameObjects(frameTargetDelta);
     this.gameObjectManager.updateAllPixiData();
   }
 

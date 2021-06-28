@@ -7,6 +7,10 @@ export class GameObjectManager {
     this.gameObjects.forEach((gameObject) => gameObject.updatePixiPosition());
   }
 
+  alertGameObjects(delta: number) {
+    this.gameObjects.forEach((gameObject) => gameObject.gameLoop(delta));
+  }
+
   addGameObject(gameObject: GameObject, addToLibraries = true) {
     this.gameObjects.push(gameObject);
 

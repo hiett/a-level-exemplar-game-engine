@@ -10,4 +10,6 @@ export class PlatformGameObject extends GameObject {
   }
 
   spawn() {}
+
+  gameLoop() {}
 }
