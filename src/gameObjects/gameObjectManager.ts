@@ -7,7 +7,11 @@ export class GameObjectManager {
     this.gameObjects.forEach((gameObject) => gameObject.updatePixiPosition());
   }
 
-  alertGameObjects(delta: number) {
+  /**
+   * This delta is the calculation of how much needs to be elapsed since the last frame.
+   * @param delta a constant of how much has changed since the last frame to multiply calculations by
+   */
+  loopGameObjects(delta: number) {
     this.gameObjects.forEach((gameObject) => gameObject.gameLoop(delta));
   }
 

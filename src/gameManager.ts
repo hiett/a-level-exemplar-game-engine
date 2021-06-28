@@ -6,6 +6,8 @@ import { Engine } from "matter-js";
 import { BackgroundGameObject } from "./gameObjects/implementations/backgroundGameObject";
 
 // For pixel games, Nearest neighbour preserves pixellated edges really well :)
+// What this literally means is find the nearest pixel and steal that color, otherwise, it'll try to lerp between
+// the colors. So for low res images you get a lot of blur, destroying pixel art.
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 export class GameManager {
@@ -62,7 +64,7 @@ export class GameManager {
     // Note: Performance.now is better at providing time faster than Date.now
     const time = performance.now();
     const frameDeltaMs = time - this.lastFrameTimeMs;
-    const frameTargetDelta = frameDeltaMs / (1000 / 60); // This is or target constant
+    const frameTargetDelta = frameDeltaMs / (1000 / 60); // This is our target constant
     this.lastFrameTimeMs = time;
 
     // Update Matter. In Matter, we can either use a runner, or call Engine#update. Since we already have a
@@ -71,7 +73,7 @@ export class GameManager {
     Engine.update(this.matterEngine, frameDeltaMs);
 
     // Copy the Matter data to Pixi for all game objects registered.
-    this.gameObjectManager.alertGameObjects(frameTargetDelta);
+    this.gameObjectManager.loopGameObjects(frameTargetDelta);
     this.gameObjectManager.updateAllPixiData();
   }
 
