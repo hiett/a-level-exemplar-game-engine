@@ -3,6 +3,7 @@ import { loadGameAssets } from "./loader/gameAsset";
 import { GameObjectManager } from "./gameObjects/gameObjectManager";
 import { TestGameObject } from "./gameObjects/implementations/testGameObject";
 import { Engine } from "matter-js";
+import { PlatformGameObject } from "./gameObjects/implementations/platformGameObject";
 
 export class GameManager {
   // Pixi
@@ -49,8 +50,8 @@ export class GameManager {
     const testObject = new TestGameObject();
     this.gameObjectManager.addGameObject(testObject);
 
-    testObject.pixiData.x = 25;
-    testObject.pixiData.y = 30;
+    const testPlatform = new PlatformGameObject(25, 600);
+    this.gameObjectManager.addGameObject(testPlatform);
   }
 
   gameLoop() {

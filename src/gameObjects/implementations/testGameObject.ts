@@ -1,7 +1,7 @@
 import { GameObject } from "../gameObject";
 import { GameAssetIdentifier, getTexture } from "../../loader/gameAsset";
 import { Sprite } from "pixi.js";
-import { Bodies } from "matter-js";
+import { Bodies, Body } from "matter-js";
 
 export class TestGameObject extends GameObject {
   constructor() {
@@ -11,5 +11,9 @@ export class TestGameObject extends GameObject {
 
   spawn() {
     console.log("I'm alive!");
+
+    setInterval(() => {
+      Body.setVelocity(this.matterData, { x: 0, y: -2 });
+    }, 1000);
   }
 }
