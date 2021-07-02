@@ -10,6 +10,8 @@ let gameAssetStorage: GameAsset[] = [];
 export enum GameAssetIdentifier {
   BACKGROUND_1 = "assets/background-shite/bg.png",
   BUILDINGS_1 = "assets/background-shite/buildings.png",
+
+  SQUARE = "assets/square.png",
 }
 
 export class GameAsset {

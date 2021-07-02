@@ -3,7 +3,7 @@ import * as PIXI from "pixi.js";
 import { loadGameAssets } from "./loader/gameAsset";
 import { GameObjectManager } from "./gameObjects/gameObjectManager";
 import { Engine } from "matter-js";
-import { BackgroundGameObject } from "./gameObjects/implementations/backgroundGameObject";
+import { GameMap } from "./map/gameMap";
 
 // For pixel games, Nearest neighbour preserves pixellated edges really well :)
 // What this literally means is find the nearest pixel and steal that color, otherwise, it'll try to lerp between
@@ -22,6 +22,8 @@ export class GameManager {
 
   // Rendering stats
   lastFrameTimeMs: number;
+
+  gameMap: GameMap;
 
   constructor() {
     this.pixiInstance = new Application({
@@ -50,9 +52,36 @@ export class GameManager {
     // Register our game loop into pixi that will be called once a frame.
     this.pixiInstance.ticker.add(this.gameLoop);
 
-    // Some tests:
-    const testObject = new BackgroundGameObject(0);
-    this.gameObjectManager.addGameObject(testObject);
+    // Load in the default game map
+    this.setGameMap(
+      GameMap.createFrom({
+        tileData: [
+          {
+            id: "square",
+            textureUrl: "assets/square.png",
+          },
+        ],
+        tiles: [
+          "square",
+          null,
+          "square",
+          null,
+          null,
+          "square",
+          null,
+          "square",
+          "square",
+          null,
+          "square",
+          null,
+          null,
+          "square",
+          null,
+          "square",
+        ],
+        mapWidth: 4,
+      })
+    );
   }
 
   gameLoop() {
@@ -75,6 +104,14 @@ export class GameManager {
     // Copy the Matter data to Pixi for all game objects registered.
     this.gameObjectManager.loopGameObjects(frameTargetDelta);
     this.gameObjectManager.updateAllPixiData();
+  }
+
+  setGameMap(gameMap: GameMap, createGameObjects = true) {
+    this.gameMap = gameMap;
+
+    if (createGameObjects) {
+      gameMap.createGameObjects();
+    }
   }
 
   /**
